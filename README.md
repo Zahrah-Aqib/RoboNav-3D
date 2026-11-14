@@ -1,62 +1,77 @@
-# RoboNav-3D | Scroll-Driven Streamlit Robot Navigation
+# RoboNav-3D
 
-Robot Navigation in an Obstacle-Filled Environment: A Comparative Study of Greedy Best-First Search and A* Search
+**Cinematic, scroll-controlled robot navigation website built with Streamlit and Python.**
 
-This standalone Streamlit project combines a cinematic, scroll-controlled robot homepage with real Python A* and Greedy Best-First Search, Matplotlib visualizations, experimental comparisons and PDF reports. Scroll the page to guide the robot right → left → center → a 360° turn. The React/Three.js version is a separate project, Final RoboNav Website.
+## What makes this version different?
+
+On the **Home** page, the robot follows your real page scrolling:
+1. Starts on the **right**.
+2. Glides toward the **left** as you scroll.
+3. Moves to the **center** and performs a scroll-controlled **360° twirl**.
+4. Continues to the simulator invitation.
+5. Reverses naturally when you scroll upward.
+
+The homepage is a **Streamlit Components v2** custom component, using three separate files:
+- `home/story.html`: robot SVG (front and back), story text, section cards.
+- `home/story.css`: dark futuristic layout, effects, sticky storytelling.
+- `home/story.js`: scroll progress, movement waypoints and rotation.
+
+This is a **3D-styled SVG/CSS robot**, not a physics-based Three.js model. Its scroll timing and 360° rotation match the approved prototype. The backend runs real pathfinding algorithms; the homepage is a visual presentation.
 
 ## Features
 
-- From-scratch Python 3 A* and Greedy Best-First Search, priority frontier (heapq), visited tracking, Manhattan/Euclidean heuristics.
-- Configurable 2D obstacle map, custom start/goal, random seed and obstacle density, JSON/ASCII input and manual obstacle editor.
-- Matplotlib step-by-step frontier, explored-node, route, and moving-robot visualizations.
-- Matched algorithm comparison and experiments at 10x10, 20x20, 50x50, densities 10%, 20%, 30%, several random seeds.
-- U-shaped Greedy trap and percentage of non-optimal Greedy routes.
-- Real CSV, PNG, and measured PDF experimental report downloads.
-- No Kaggle dataset, ML training, database, JavaScript build or separate API server.
+| Page | Content |
+| --- | --- |
+| **Home** | Full-width scrolling robot experience and animated storytelling |
+| **Grid Simulator** | Obstacles, maps, real Python A* / Greedy algorithms, step-by-step playback and frontier table |
+| **Algorithm Comparison** | Matched map for both algorithms and Matplotlib figures |
+| **Experiment Lab** | Seeded 10×10 / 20×20 / 50×50 tests, density variation, non-optimality percentage, CSV, PNG and PDF |
+| **Methodology** | Grid states, f(n), heuristics, experiment design |
+| **About & Team** | Project and contributors |
 
-## Windows setup
+Algorithms, Matplotlib plotting and experiment reporting are written in Python in the `backend/` directory. No machine-learning model, Kaggle dataset, database, external API or paid backend is needed.
 
-Open PowerShell in the project root:
+## Run locally
 
-    py -3.12 -m venv .venv
-    .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-    .\.venv\Scripts\python.exe -m streamlit run streamlit_app.py
+Install **Python 3.12**. Open PowerShell in the repository root:
 
-Open http://localhost:8501.
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m streamlit run streamlit_app.py
+```
 
-## Free Streamlit deployment
+Visit `http://localhost:8501`. Scroll the Home page with your mouse. Use the sidebar to open the simulator, comparison and experiments.
 
-1. Create a GitHub repository named RoboNav-3D and push this project to its main branch.
-2. Sign in at https://share.streamlit.io with GitHub.
-3. Choose Create app, your RoboNav-3D repository, branch main.
-4. Set main file path to streamlit_app.py.
-5. Use Python 3.12 if offered, then deploy.
-6. Use the resulting public Streamlit app link in the final submission.
+## Deploy free on Streamlit Community Cloud
 
-## Project files
+1. Open https://share.streamlit.io and choose **Create app → Deploy from GitHub**.
+2. Repository: `Zahrah-Aqib/RoboNav-3D`
+3. Branch: `main`
+4. Main file path: `streamlit_app.py`
+5. Python version: `3.12`.
+6. Deploy and test the Home page, Grid Simulator, Experiment Lab and PDF export.
 
-    streamlit_app.py
-    requirements.txt
-    .streamlit/config.toml
-    backend/algorithms/search.py
-    backend/algorithms/maps.py
-    backend/experiments.py
-    backend/report.py
-    backend/tests/
-    sample_maps/
-    scripts/check_streamlit.py
-    docs/
-    README.md
+Do **not** use Render, Vercel or an extra Python API for this project.
 
-## Tests
+## Verification
 
-    .\.venv\Scripts\python.exe -m unittest discover -s backend/tests -v
-    .\.venv\Scripts\python.exe scripts/check_streamlit.py
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s backend/tests -v
+```
 
-## Proposal and limitations
+GitHub Actions also checks Python syntax, tests, and the scroll JavaScript.
 
-The submitted proposal names Python 3, a 2D static grid, Greedy and A* implemented from scratch, a priority-queue frontier, Manhattan and Euclidean heuristics, graphical search tracing and measured experiments. It proposes Matplotlib/Pygame/Tkinter as alternative Python visualization libraries; this project uses Matplotlib.
+**Deployment status:** source code is in GitHub; the live Streamlit Community Cloud deployment must be created and visually tested separately.
 
-Navigation allows four-direction movements costing 1 per step. Eight-direction movement is optional in the proposal and is not implemented. Execution time excludes plotting. The final report PDF should be reviewed and supplemented with the team's interpretation, working app screenshots, live URL, and a demonstration video if requested.
+## Academic scope
 
-See docs/STREAMLIT_SETUP.md and docs/VIVA_GUIDE.md.
+- 2D static grid, up/down/left/right movement, unit edge cost.
+- A* uses `f(n) = g(n) + h(n)`; Greedy Best-First uses `f(n) = h(n)`.
+- Manhattan and Euclidean heuristics.
+- Priority queue via `heapq`; true explored and frontier states.
+- Matched-map comparisons, deterministic random seeds, measured execution times.
+- U-shaped trap test: on the specific map, A* cost **15**, Greedy cost **39**.
+- Four experiment metrics: path cost, expanded nodes, max frontier size, execution time.
+
+This is a new project and does not replace the existing `RoboNav-Streamlit` or `Final-RoboNav-Website` repositories.
